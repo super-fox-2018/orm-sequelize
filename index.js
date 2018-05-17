@@ -9,6 +9,10 @@ let Author = Model.Author;
 let Tag = Model.Tag;
 let Article = Model.Article;
 
+if (table === 'help') {
+  help();
+}
+
 if (table === 'author') {
   if (command === 'add') {
     addAuthor(args);
@@ -219,4 +223,12 @@ function eraseTag(args) {
   }).then(() => {
     console.log(`Successfully delete id: ${id}`);
   });
+}
+
+function help() {
+  console.log(`node index.js <table_name> add <attribute_value> <attribute_value> ...`);
+  console.log(`node index.js <table_name> readOne <id>`);
+  console.log(`node index.js <table_name> readAll`);
+  console.log(`node index.js <table_name> update <attribute> <attribute_value> <attribute> <attribute_value> ...`);
+  console.log(`node index.js <table_name> erase <id>`);
 }
