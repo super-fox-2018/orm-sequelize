@@ -12,7 +12,7 @@ if (table == 'author') {
         addAuthor(param)
     }
     if (command == 'read_one') {
-        readOne(param)
+        readOneAuthor(param)
     }
     if (command == 'read_all') {
         readAll(param)
@@ -26,6 +26,18 @@ if (table == 'author') {
 } else if (table == 'tag') {
     if (command == 'add') {
         addTag(param)
+    }
+    if (command == 'read_one') {
+        readOneTag(param)
+    }
+    if (command == 'read_all') {
+        readAllTag();
+    }
+    if (command == 'update') {
+        updateTag(param);
+    }
+    if (command == 'delete') {
+        deleteTag(param);
     }
 }
 
@@ -53,7 +65,7 @@ function addAuthor(param) {
         })
 }
 
-function readOne(param) {
+function readOneAuthor(param) {
     let id = param[0];
 
     Author.findById(id)
@@ -65,7 +77,7 @@ function readOne(param) {
         })
 }
 
-function readAll() {
+function readAllAuthor() {
     Author.findAll({ raw: true })
         .then((authors) => {
             console.log(authors)
@@ -106,21 +118,68 @@ function deleteAuthor(param) {
 
 }
 
-function addArticle(param){
+function addArticle(param) {
     let title = param[0];
     let body = param[1];
     let authorId = param[2];
     let tagId = param[3];
 }
 
-function addTag(param){
+function addTag(param) {
     let tagName = param.join(' ');
 
     Tag.create({
-        name : tagName
+        name: tagName
     })
-    .then((tag)=>{
-        console.log(tag.get({plain: true}))
-    })
+        .then((tag) => {
+            console.log(tag.get({ plain: true }))
+        })
 
+}
+
+function readOneTag(param) {
+    let id = param[0];
+    Tag.findById(id)
+        .then((tag) => {
+            console.log(tag.get({ plain: true }))
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .then(() => process.exit());
+}
+function readAllTag() {
+    Tag.findAll({ raw: true })
+        .then((tags) => {
+            console.log(tags)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .then(() => process.exit());
+}
+
+function updateTag(param) {
+    let objTag = {}
+    let id = param.splice(-1, 1).join('');
+    objTag.name = param.join(' ');
+    Tag.update(objTag, { where: { id: id } })
+        .then((result) => {
+            if (result) {
+                Tag.findById(id)
+                    .then((tag) => {
+                        console.log(tag.get({ plain: true }))
+                    })
+            }
+        })
+}
+
+function deleteTag(param){
+    let id = param[0];
+    Tag.destroy({
+        where: { id: id }
+    })
+    .then((delTag)=>{
+        console.log(delTag);
+    })
 }
