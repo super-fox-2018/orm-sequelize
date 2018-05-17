@@ -6,6 +6,8 @@ const subject = argv[3] === undefined? '' : argv[3].toLowerCase()
 
 const commandextension = argv.slice(4)
 
+if(command === 'help') Controller.showHelp()
+
 switch(subject){
     case 'author':
         switch(command){
@@ -63,9 +65,6 @@ switch(subject){
                 Controller.deleteArticle(...commandextension)
                 break;
         }
-        break;
-    case "help":
-        Controller.showHelp()
         break;
     default:
         Controller.telltoShowHelp()
