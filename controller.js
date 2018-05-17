@@ -21,7 +21,7 @@ class Controller {
 			view.showError(err)
 		})
 	}
-	static readOne(id){
+	static readOneAuthor(id){
 		Author.findById(id)
 		.then((author)=>{
 			view.readOne(author.get({ plain: true}))
@@ -30,7 +30,7 @@ class Controller {
 			view.showError(err)
 		})
 	}
-	static readAll(){
+	static readAllAuthor(){
 		Author.findAll({raw: true})
 		.then((authors)=>{
 			view.readAll(authors)

@@ -14,11 +14,20 @@ class View{
 	static readAll(data){
 		console.log(data)
 	}
-	static update(){
-		console.log('data Masuk')
+	static update(data){
+		console.log(data+' data diupdate')
 	}
 	static delete(data){
 		console.log(`${data} data has been deleted`)
+	}
+	static addTag(data){
+		console.log(data)
+	}
+	static readOneTags(data){
+		console.log(data)
+	}
+	static readAllTags(data){
+		console.log(data)
 	}
 }
 
