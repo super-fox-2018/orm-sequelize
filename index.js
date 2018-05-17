@@ -1,17 +1,16 @@
 const Sequelize = require('sequelize');
+const Table = require('cli-table');
+const chalk = require('chalk');
 const models = require('./models');
 const { Article, Author, Tag } = models;
+const Op = Sequelize.Op;
 
 const argv = process.argv;
 const option = argv[2];
 const command = argv[3];
 
-const sequelize = new Sequelize({
-  database: 'demo',
-  username: 'postgres',
-  password: 'postgres',
-  dialect: 'postgres'
-});
+// AND, OR, iLIKE, in, notIn
+
 
 switch(option) {
   case 'author':
@@ -30,7 +29,7 @@ switch(option) {
         return acc;
       }, {});
 
-      Author.create(props)
+      Author.create(props, { raw : true })
         .then(author => {
           if (author) console.log('Author added successfully');
         })
@@ -41,14 +40,17 @@ switch(option) {
       const id = argv[4];
       Author.findById(id, { raw : true })
         .then(author => {
-          console.log(author);
+          if (author) showInTable(author);
+          else console.log('Author data not found')
         })
         .catch(err => console.log(err))
         .then(() => process.exit());
     } else if (command === 'read_all') {
       Author.findAll({ raw : true })
         .then(authors => {
-          if (authors.length > 0) console.log(authors);
+          if (authors.length > 0) {
+            authors.forEach(author => showInTable(author));
+          } 
           else console.log('No author was found');
         })
         .catch(err => console.log(err))
@@ -109,15 +111,17 @@ switch(option) {
       const id = argv[4];
       Article.findById(id, { raw : true })
         .then(article => {
-          if (article) console.log(article);
+          if (article) showInTable(article);
           else console.log('Article not found');
         })
         .catch(err => console.log(err))
         .then(() => process.exit());
     } else if (command === 'read_all') {
       Article.findAll({ raw : true })
-        .then(article => {
-          if (article.length > 0) console.log(article);
+        .then(articles => {
+          if (articles.length > 0) {
+            articles.forEach(article => showInTable(article));
+          }
           else console.log('No Article was found');
         })
         .catch(err => console.log(err))
@@ -173,15 +177,17 @@ switch(option) {
       const id = argv[4];
       Tag.findById(id, { raw : true })
         .then(tag => {
-          if (tag) console.log(tag);
+          if (tag) showInTable(tag);
           else console.log('Tag not found');
         })
         .catch(err => console.log(err))
         .then(() => process.exit());
     } else if (command === 'read_all') {
       Tag.findAll({ raw : true })
-        .then(tag => {
-          if (tag.length > 0) console.log(tag);
+        .then(tags => {
+          if (tags.length > 0) {
+            tags.forEach(tag => showInTable(tag));
+          }
           else console.log('No Tag was found');
         })
         .catch(err => console.log(err))
@@ -242,4 +248,29 @@ switch(option) {
     });
     console.log('\nFor multiple words input please put them inside quotation marks\n');
     console.log('================================================================');
+}
+
+function showInTable(data) {
+  const columns = Object.keys(data);
+  const head = columns.map(column => {
+    column = column.replace(/_/g, ' ');
+    column = column.replace(/(^\w{2}$)|(\b[a-z])/gi, (match) => match.toUpperCase());
+    return column;
+  }).slice(0, columns.length - 2);
+  const colWidths = columns.map((col, i) => {
+    if (i === 0) return 5;
+    else return 12;
+  }).slice(0, columns.length - 2);
+  const table = new Table({
+    head,
+    colWidths
+  });
+
+  const props = [];
+  for (let i = 0; i < columns.length - 2; i += 1) {
+    props.push(chalk.blue(data[columns[i]]));
+  }
+
+  table.push(props);
+  console.log(table.toString());
 }
