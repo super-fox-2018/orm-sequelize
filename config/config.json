@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "setia",
+    "password": "Geeknave15",
+    "database": "ORM Sequelize",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
