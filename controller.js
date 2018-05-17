@@ -6,6 +6,14 @@ const View = require('./view.js')
 
 class Controller{
 
+    static telltoShowHelp(){
+        View.sendMessage("write index.js help to see the commands available")
+    }
+
+    static showHelp(){
+        View.showHelp()
+    }
+
     static addAuthor(firstName,lastName,religion,gender,age){
         Author.add(firstName,lastName,religion,gender,age).then(
             addedAuthor =>{

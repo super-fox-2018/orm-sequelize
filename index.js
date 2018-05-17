@@ -64,4 +64,9 @@ switch(subject){
                 break;
         }
         break;
+    case "help":
+        Controller.showHelp()
+        break;
+    default:
+        Controller.telltoShowHelp()
 }
