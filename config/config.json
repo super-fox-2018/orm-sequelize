@@ -4,6 +4,6 @@
     "password": "postgres",
     "database": "author_tag_article",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }
