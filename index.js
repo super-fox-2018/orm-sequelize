@@ -9,8 +9,6 @@ const argv = process.argv;
 const option = argv[2];
 const command = argv[3];
 
-// AND, OR, iLIKE, in, notIn
-
 
 switch(option) {
   case 'author':
@@ -46,10 +44,12 @@ switch(option) {
         .catch(err => console.log(err))
         .then(() => process.exit());
     } else if (command === 'read_all') {
-      Author.findAll({ raw : true })
+      const operator = argv[4];
+      const condition = generateCondition(operator);
+      Author.findAll({ where : condition })
         .then(authors => {
           if (authors.length > 0) {
-            authors.forEach(author => showInTable(author));
+            authors.forEach(author => showInTable(author.dataValues));
           } 
           else console.log('No author was found');
         })
@@ -117,10 +117,12 @@ switch(option) {
         .catch(err => console.log(err))
         .then(() => process.exit());
     } else if (command === 'read_all') {
+      const operator = argv[4];
+      const condition = generateCondition(operator);
       Article.findAll({ raw : true })
         .then(articles => {
           if (articles.length > 0) {
-            articles.forEach(article => showInTable(article));
+            articles.forEach(article => showInTable(article.dataValues));
           }
           else console.log('No Article was found');
         })
@@ -183,10 +185,12 @@ switch(option) {
         .catch(err => console.log(err))
         .then(() => process.exit());
     } else if (command === 'read_all') {
+      const operator = argv[4];
+      const condition = generateCondition(operator);
       Tag.findAll({ raw : true })
         .then(tags => {
           if (tags.length > 0) {
-            tags.forEach(tag => showInTable(tag));
+            tags.forEach(tag => showInTable(tag.dataValues));
           }
           else console.log('No Tag was found');
         })
@@ -273,4 +277,28 @@ function showInTable(data) {
 
   table.push(props);
   console.log(table.toString());
+}
+
+function generateCondition(operator) {
+  let operands = null;
+  let condition = null;
+  switch(operator) {
+    case 'and':
+    case 'or':
+      params = argv.slice(5)
+      operands = params.reduce((acc, param, i) => {
+        if (i % 3 === 0 && param !== '=') acc[param] = params[i+2];
+        return acc;
+      }, {});
+      condition = { [Op[operator]]: operands };
+      break;
+    case 'iLike':
+    case 'gt':
+    case 'lt':
+      column = argv[5];
+      operands = argv[6];
+      condition = { [column] : { [Op[operator]] : operands }};
+      break;
+  }
+  return condition;
 }
