@@ -231,12 +231,12 @@ switch(option) {
     const helpMenus = [
       ['author add', 'add [first_name] [last_name] [religion] [gender] [age]'],
       ['author read_one', 'read_one [id]'],
-      ['author read_all', 'read_all'],
+      ['author read_all', 'read_all [operator]'],
       ['author update', 'update [id] [columnName] = [newValue]'],
       ['author erase', 'erase [id]'],
       ['article add', 'add [title] [body] [author_id] [tag_id]'],
       ['article read_one', 'read_one [id]'],
-      ['article read_all', 'read_all'],
+      ['article read_all', 'read_all '],
       ['article update', 'update [id] [columnName] = [newValue]'],
       ['article erase', 'erase [id]'],
       ['tag add', 'add [name]'],
@@ -250,6 +250,21 @@ switch(option) {
     helpMenus.forEach(menu => {
       console.log(`${menu[0]} --> ${menu[1]}`);
     });
+
+    const operatorsHelp = [
+      ['and', 'read_all and [column1] = [value2] ... [columcnN] = [valueN]'],
+      ['or', 'read_all or [column1] = [value2] ... [columcnN] = [valueN]'],
+      ['like', 'read_all iLike [columnName] [pattern]'],
+      ['greater than', 'read_all gt [columnName] [value]'],
+      ['less than', 'read_all lt [columnName] [value]']
+    ];
+
+    console.log('\nHow to use operator for read_all :\n');
+
+    operatorsHelp.forEach(help => {
+      console.log(`${help[0]} --> ${help[1]}`);
+    });
+
     console.log('\nFor multiple words input please put them inside quotation marks\n');
     console.log('================================================================');
 }
