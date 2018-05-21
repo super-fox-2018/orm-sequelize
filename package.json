@@ -1,0 +1,25 @@
+{
+  "name": "orm-sequelize",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/super-fox-2018/orm-sequelize.git"
+  },
+  "author": "Dwiky Erlangga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/super-fox-2018/orm-sequelize/issues"
+  },
+  "homepage": "https://github.com/super-fox-2018/orm-sequelize#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "cli-table": "^0.3.1",
+    "pg": "^7.4.3",
+    "sequelize": "^4.37.7"
+  }
+}
